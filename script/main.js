@@ -19,15 +19,30 @@ const fetchData = () => {
         }
 
         // Check if the iteration is over
-        // Run amimation if so
+        // If so, data is ready but DON'T auto-run animation (wait for start button)
         if (dataArr.length === dataArr.indexOf(customData) + 1) {
-          animationTimeline();
+          // Animation sẽ được trigger từ start button
         }
       });
     });
 };
 
-// Animation Timeline
+// Start button handler for mobile autoplay
+const startBtn = document.getElementById('startBtn');
+const startOverlay = document.getElementById('startOverlay');
+if (startBtn && startOverlay) {
+  startBtn.addEventListener('click', () => {
+    startOverlay.style.display = 'none';
+    // Prime audio và start animation
+    const bgm = document.getElementById('bgm');
+    if (bgm) {
+      bgm.load();
+    }
+    animationTimeline();
+  });
+}
+
+// animation timeline
 const animationTimeline = () => {
   // Split chars that need to be animated individually (guard if elements missing)
   const textBoxChars = document.getElementsByClassName("hbd-chatbox")[0];
@@ -537,5 +552,5 @@ const initFireworks = () => {
   requestAnimationFrame(loop);
 };
 
-// Run fetch and animation in sequence
+// Run fetch, init fireworks, and wait for user interaction
 fetchData();
